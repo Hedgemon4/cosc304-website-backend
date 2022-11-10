@@ -6,7 +6,7 @@ const moment = require('moment');
 router.get('/', function(req, res, next) {
     // res.setHeader('Content-Type', 'text/html');
     // res.write('<h1>Only Ducks</h1>');
-
+    res.header("Access-Control-Allow-Origin", '*');
     let results
 
     /** Create connection, and validate that it connected successfully **/
