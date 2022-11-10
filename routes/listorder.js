@@ -4,9 +4,7 @@ const sql = require('mssql');
 const moment = require('moment');
 
 router.get('/', function(req, res, next) {
-    // res.setHeader('Content-Type', 'text/html');
-    // res.write('<h1>Only Ducks</h1>');
-    res.header("Access-Control-Allow-Origin", '*');
+    res.header("Access-Control-Allow-Origin", '*')
     let results
 
     /** Create connection, and validate that it connected successfully **/
@@ -14,21 +12,18 @@ router.get('/', function(req, res, next) {
         try{
             let pool = await sql.connect(dbConfig)
 
-            res.write('<p>Connected</p>')
-
             let sqlQuery = "SELECT * FROM orderSummary"
 
             results = await pool.request().query(sqlQuery)
 
-            res.write("<table><tr><th>OrderId</th><th>Total Amount</th></tr>")
-            for( let i = 0; i < results.recordset.length; i++) {
-                let result = results.recordset[i]
-                res.write("<tr><td>" + result.orderId + "</td>" + "<td>" + result.totalAmount+ "</td></tr>")
-            }
-            res.write("</table>")
+            // res.write("<table><tr><th>OrderId</th><th>Total Amount</th></tr>")
+            // for( let i = 0; i < results.recordset.length; i++) {
+            let result = results.recordset
+            //     res.write("<tr><td>" + result.orderId + "</td>" + "<td>" + result.totalAmount+ "</td></tr>")
+            // }
+            // res.write("</table>")
+            res.send(result)
 
-            res.end();
-            console.log("hello")
         } catch (err){
             console.dir(err)
         }
