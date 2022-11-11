@@ -1,7 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session')
-// const cors = require('cors')
 
 let loadData = require('./routes/loaddata');
 let listOrder = require('./routes/listorder');
@@ -29,9 +28,6 @@ dbConfig = {
 // This uses MemoryStorage which is not
 // recommended for production use.
 app.use(
-//     cors({
-//   origin: '*'
-// }),
     session({
   secret: 'COSC 304 Rules!',
   resave: false,
