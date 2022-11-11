@@ -58,6 +58,12 @@ app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
 
+app.use(function(req, res, next){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  next();
+})
+
 // Rendering the main page
 app.get('/', function (req, res) {
   res.render('index', {
