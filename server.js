@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const session = require('express-session')
+const bodyParser = require('body-parser')
 // const cors = require('cors')
 
 let loadData = require('./routes/loaddata');
@@ -57,10 +58,12 @@ app.use('/addcart', addCart);
 app.use('/showcart', showCart);
 app.use('/checkout', checkout);
 app.use('/order', order);
+app.use(express.json())
 
 app.use(function(req, res, next){
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader('Access-Control-Allow-Methods', '*')
   next();
 })
 

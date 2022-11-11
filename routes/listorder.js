@@ -3,6 +3,14 @@ const router = express.Router();
 const sql = require('mssql');
 const moment = require('moment');
 
+router.use(express.json())
+
+router.use(function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    next();
+})
+
 router.get('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
     let results

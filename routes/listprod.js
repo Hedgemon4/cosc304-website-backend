@@ -1,6 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
+const bodyParser = require('body-parser')
+
+router.use(function(req, res, next){
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Headers", "*");
+    res.setHeader('Access-Control-Allow-Methods', '*')
+    next();
+})
+
+router.use(bodyParser.json())
 
 router.get('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
@@ -48,7 +58,28 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-    console.log(req)
+    console.log(req.body.product);
+    (async function() {
+        try{
+            let pool = await sql.connect(dbConfig)
+
+            const product = "c"
+
+            const ps = new sql.PreparedStatement(pool)
+            ps.input('param', sql.VarChar(40))
+            await ps.prepare("SELECT * FROM product WHERE productName LIKE '@param%'")
+
+            results = await ps.execute({param: product})
+
+            await ps.unprepare()
+
+            console.log(results)
+
+            res.send(results.recordset)
+        } catch (err){
+            console.dir(err)
+        }
+    })();
 })
 
 module.exports = router;
