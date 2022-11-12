@@ -3,7 +3,7 @@ const router = express.Router();
 const sql = require('mssql');
 const bodyParser = require('body-parser')
 
-router.use(function(req, res, next){
+router.use(function (req, res, next) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Headers", "*");
     res.setHeader('Access-Control-Allow-Methods', '*')
@@ -12,11 +12,11 @@ router.use(function(req, res, next){
 
 router.use(bodyParser.json())
 
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", '*');
 
-    (async function() {
-        try{
+    (async function () {
+        try {
             let pool = await sql.connect(dbConfig)
 
             res.write('<p>Connected to Product Summary</p>')
@@ -34,7 +34,7 @@ router.get('/', function(req, res, next) {
 
             /** Print out the ResultSet **/
             res.write("<table><tr><th>ProductId</th><th>ProductName</th></tr>")
-            for( let i = 0; i < results.recordset.length; i++) {
+            for (let i = 0; i < results.recordset.length; i++) {
                 let result = results.recordset[i]
                 res.write("<tr><td>" + result.productId + "</td>" + "<td>" + result.productName + "</td></tr>")
             }
@@ -45,22 +45,22 @@ router.get('/', function(req, res, next) {
              addcart?id=<productId>&name=<productName>&price=<productPrice>
              **/
             res.end();
-        } catch (err){
+        } catch (err) {
             console.dir(err)
         }
     })();
 
     /**
-        Useful code for formatting currency:
-        let num = 2.89999;
-        num = num.toFixed(2);
-    **/
+     Useful code for formatting currency:
+     let num = 2.89999;
+     num = num.toFixed(2);
+     **/
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', function (req, res, next) {
     console.log(req.body.product);
-    (async function() {
-        try{
+    (async function () {
+        try {
             let pool = await sql.connect(dbConfig)
 
             const product = req.body.product
@@ -73,11 +73,8 @@ router.post('/', function(req, res, next) {
             let result = results.recordset
 
             await ps.unprepare()
-
-            console.log(result)
-
             res.send(result)
-        } catch (err){
+        } catch (err) {
             console.dir(err)
         }
     })();
