@@ -63,19 +63,20 @@ router.post('/', function(req, res, next) {
         try{
             let pool = await sql.connect(dbConfig)
 
-            const product = "c"
+            const product = req.body.product
 
             const ps = new sql.PreparedStatement(pool)
             ps.input('param', sql.VarChar(40))
-            await ps.prepare("SELECT * FROM product WHERE productName LIKE '@param%'")
+            await ps.prepare("SELECT * FROM product WHERE productName LIKE '%' + @param + '%'")
 
             results = await ps.execute({param: product})
+            let result = results.recordset
 
             await ps.unprepare()
 
-            console.log(results)
+            console.log(result)
 
-            res.send(results.recordset)
+            res.send(result)
         } catch (err){
             console.dir(err)
         }
