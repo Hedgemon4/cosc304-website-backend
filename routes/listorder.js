@@ -3,9 +3,15 @@ const router = express.Router();
 const sql = require('mssql');
 const moment = require('moment');
 
+router.use(express.json())
+
+router.use(function(req, res, next){
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    next();
+})
+
 router.get('/', function(req, res, next) {
-    // res.setHeader('Content-Type', 'text/html');
-    // res.write('<h1>Only Ducks</h1>');
     res.header("Access-Control-Allow-Origin", '*');
     let results
 
@@ -14,7 +20,7 @@ router.get('/', function(req, res, next) {
         try{
             let pool = await sql.connect(dbConfig)
 
-            res.write('<p>Connected</p>')
+            res.write('<p>Connected to Order Summary</p>')
 
             let sqlQuery = "SELECT * FROM orderSummary"
 
@@ -28,7 +34,6 @@ router.get('/', function(req, res, next) {
             res.write("</table>")
 
             res.end();
-            console.log("hello")
         } catch (err){
             console.dir(err)
         }
